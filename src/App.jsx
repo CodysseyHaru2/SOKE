@@ -7,6 +7,7 @@ import CampaignForm from './components/CampaignForm'
 import CampaignList from './components/CampaignList'
 import Login from './components/Login'
 import PreviewPanel from './components/PreviewPanel'
+import SocialDialog from './components/SocialDialog'
 import { createId, createResults } from './lib/campaign'
 import { DEFAULT_CHANNELS } from './lib/channels'
 import { resizeImage } from './lib/image'
@@ -20,6 +21,8 @@ export default function App() {
   const [form, setForm] = useState(emptyForm)
   const [results, setResults] = useState([])
   const [businessOpen, setBusinessOpen] = useState(false)
+  const [socialOpen, setSocialOpen] = useState(false)
+  const [focusChannel, setFocusChannel] = useState(null)
   const [campaignId, setCampaignId] = useState(null)
   const [busy, setBusy] = useState(false)
   const [toast, setToast] = useState('')
@@ -60,7 +63,7 @@ export default function App() {
   if (!email) return <Login onLogin={login} />
   return <>
     <div className="app-shell" id="top">
-      <AppHeader onBusiness={() => setBusinessOpen(true)} onLogout={logout} />
+      <AppHeader onBusiness={() => { setFocusChannel(null); setBusinessOpen(true) }} onSocial={() => setSocialOpen(true)} onLogout={logout} />
       <main className="content">
         <section className="hero"><span className="eyebrow">SOCIAL CONTENT MAKER</span><h1>오늘도 한 번에, <em>소크</em></h1><p><b>{email}</b>님의 캠페인은 이 기기에 안전하게 저장됩니다.</p></section>
         <div className="workspace">
@@ -71,7 +74,8 @@ export default function App() {
       </main>
     </div>
     <BottomNav />
-    <BusinessDialog open={businessOpen} business={data.business} onClose={() => setBusinessOpen(false)} onSave={business => { setData(current => ({ ...current, business })); setBusinessOpen(false); notify('가게 정보를 저장했습니다.') }} />
+    <SocialDialog open={socialOpen} business={data.business} onClose={() => setSocialOpen(false)} onEdit={key => { setSocialOpen(false); setFocusChannel(key); setBusinessOpen(true) }} />
+    <BusinessDialog open={businessOpen} business={data.business} focusChannel={focusChannel} onClose={() => setBusinessOpen(false)} onSave={business => { setData(current => ({ ...current, business })); setBusinessOpen(false); if (focusChannel) setSocialOpen(true); notify('가게 정보를 저장했습니다.') }} />
     <CampaignDialog campaign={openCampaign} onClose={() => setCampaignId(null)} onChange={updateCampaign} onDelete={deleteCampaign} />
     <div className={`toast ${toast ? 'show' : ''}`}>{toast}</div>
   </>
