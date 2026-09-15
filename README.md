@@ -11,7 +11,7 @@ npm install
 npm run dev
 ```
 
-브라우저에서 `http://localhost:5173`을 엽니다.
+브라우저에서 `http://localhost:5174`를 엽니다.
 
 ## 빌드
 
@@ -23,6 +23,14 @@ npm run preview
 - `npm run build`: 배포 파일을 `dist/`에 생성합니다.
 - `npm run preview`: 빌드 결과를 `http://localhost:4173`에서 확인합니다.
 - 정적 호스팅 서비스에서는 빌드 명령을 `npm run build`, 배포 폴더를 `dist`로 설정합니다.
+
+## GitHub Pages 배포
+
+`main` 브랜치에 푸시하면 GitHub Actions가 앱을 빌드하고 GitHub Pages에 자동 배포합니다.
+
+- 배포 주소: `https://codysseyharu2.github.io/SOKE/`
+- 수동 배포: GitHub 저장소의 `Actions` 탭에서 `Deploy to GitHub Pages` 작업을 실행합니다.
+- 저장소의 `Settings → Pages → Build and deployment` 소스는 `GitHub Actions`를 사용합니다.
 
 ## 프로젝트 구조
 
@@ -38,16 +46,3 @@ src/
 ## 저장 방식
 
 로그인 이메일은 사용자를 구분하는 식별자로만 쓰입니다. 가게 정보와 캠페인은 현재 브라우저의 `localStorage`에 저장됩니다. 서버 계정 인증이나 여러 기기 간 동기화는 포함하지 않습니다.
-
-## GitHub에 올리기
-
-```bash
-git init
-git add .
-git commit -m "Build Soke campaign app with React"
-git branch -M main
-git remote add origin https://github.com/USERNAME/REPOSITORY.git
-git push -u origin main
-```
-
-`USERNAME/REPOSITORY`는 실제 GitHub 저장소 주소로 바꿔주세요.
